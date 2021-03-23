@@ -53,6 +53,8 @@ export function useSelectStates(props) {
     isOnComposition: false,
     isSilentBlur: false,
     selectEmitter,
+    prefixWidth: null,
+    tagInMultiLine: false,
   })
 }
 
@@ -264,6 +266,11 @@ export const useSelect = (props, states: States, ctx) => {
         : Math.max(
           _tags ? (_tags.clientHeight + (_tags.clientHeight > sizeInMap ? 6 : 0)) : 0,
           sizeInMap) + 'px'
+      if(parseFloat(input.style.height) > sizeInMap){
+        states.tagInMultiLine = true
+      } else {
+        states.tagInMultiLine = false
+      }
       if (states.visible && emptyText.value !== false) {
         popper.value?.update?.()
       }
