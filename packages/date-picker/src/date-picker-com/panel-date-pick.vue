@@ -465,7 +465,20 @@ export default defineComponent({
     }
 
     const parseUserInput = value => {
-      return dayjs(value, props.format)
+      let format = props.format
+      function setCharAt (str,index,chr) {
+        if(index > str.length-1) return str
+        return str.substring(0,index) + chr + str.substring(index+1)
+      }
+      if (props.buddhistEra) {
+        const yearStartIndex = format.indexOf('B')
+        const yearStr = (parseInt(value.substring(yearStartIndex, yearStartIndex + 4)) - 543).toString()
+        for (let i = 0; i< 4; i++) {
+          value = setCharAt(value, yearStartIndex + i, yearStr[i])
+        }
+        format = format.replace('B', 'Y')
+      }
+      return dayjs(value, format)
     }
 
     const getDefaultValue = () => {
