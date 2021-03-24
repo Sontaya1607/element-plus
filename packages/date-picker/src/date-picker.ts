@@ -13,6 +13,7 @@ import weekYear from 'dayjs/plugin/weekYear'
 import dayOfYear from 'dayjs/plugin/dayOfYear'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import buddhistEra from 'dayjs/plugin/buddhistEra'
 import { h } from 'vue'
 dayjs.extend(localeData)
 dayjs.extend(advancedFormat)
@@ -22,6 +23,7 @@ dayjs.extend(weekYear)
 dayjs.extend(dayOfYear)
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
+dayjs.extend(buddhistEra)
 
 const getPanel = function(type) {
   if (type === 'daterange' || type === 'datetimerange') {
@@ -41,6 +43,10 @@ export default defineComponent({
       type: String,
       default: 'date',
     },
+    buddhistEra: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['update:modelValue'],
   setup(props, ctx) {
@@ -52,7 +58,9 @@ export default defineComponent({
       'onUpdate:modelValue': value => ctx.emit('update:modelValue', value),
     },
     {
-      default: scopedProps => h(getPanel(props.type), scopedProps),
+      default: scopedProps => {
+        return h(getPanel(props.type), { ...scopedProps, buddhistEra: props.buddhistEra })
+      },
     })
   },
 })

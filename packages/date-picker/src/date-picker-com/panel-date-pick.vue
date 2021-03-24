@@ -113,6 +113,7 @@
             :date="innerDate"
             :disabled-date="disabledDate"
             :parsed-value="parsedValue"
+            :buddhist-era="buddhistEra"
             @pick="handleYearPick"
           />
           <month-table
@@ -200,6 +201,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    buddhistEra: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['pick', 'set-picker-option'],
   setup(props, ctx) {
@@ -284,15 +289,16 @@ export default defineComponent({
     const currentView = ref('date')
 
     const yearLabel = computed(() => {
+      const yearOffset = props.buddhistEra ? 543 : 0
       const yearTranslation = t('el.datepicker.year')
       if (currentView.value === 'year') {
-        const startYear = Math.floor(year.value / 10) * 10
+        const startYear = (Math.floor(year.value / 10) * 10) + yearOffset
         if (yearTranslation) {
           return startYear + ' ' + yearTranslation + ' - ' + (startYear + 9) + ' ' + yearTranslation
         }
         return startYear + ' - ' + (startYear + 9)
       }
-      return year.value + ' ' + yearTranslation
+      return year.value + yearOffset + ' ' + yearTranslation
     })
 
     const handleShortcutClick = shortcut => {

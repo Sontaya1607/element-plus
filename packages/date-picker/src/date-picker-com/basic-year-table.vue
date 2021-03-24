@@ -3,38 +3,38 @@
     <tbody>
       <tr>
         <td class="available" :class="getCellStyle(startYear + 0)">
-          <a class="cell">{{ startYear }}</a>
+          <a class="cell">{{ startYear + yearOffset }}</a>
         </td>
         <td class="available" :class="getCellStyle(startYear + 1)">
-          <a class="cell">{{ startYear + 1 }}</a>
+          <a class="cell">{{ startYear + yearOffset + 1 }}</a>
         </td>
         <td class="available" :class="getCellStyle(startYear + 2)">
-          <a class="cell">{{ startYear + 2 }}</a>
+          <a class="cell">{{ startYear + yearOffset + 2 }}</a>
         </td>
         <td class="available" :class="getCellStyle(startYear + 3)">
-          <a class="cell">{{ startYear + 3 }}</a>
+          <a class="cell">{{ startYear + yearOffset + 3 }}</a>
         </td>
       </tr>
       <tr>
         <td class="available" :class="getCellStyle(startYear + 4)">
-          <a class="cell">{{ startYear + 4 }}</a>
+          <a class="cell">{{ startYear + yearOffset + 4 }}</a>
         </td>
         <td class="available" :class="getCellStyle(startYear + 5)">
-          <a class="cell">{{ startYear + 5 }}</a>
+          <a class="cell">{{ startYear + yearOffset + 5 }}</a>
         </td>
         <td class="available" :class="getCellStyle(startYear + 6)">
-          <a class="cell">{{ startYear + 6 }}</a>
+          <a class="cell">{{ startYear + yearOffset + 6 }}</a>
         </td>
         <td class="available" :class="getCellStyle(startYear + 7)">
-          <a class="cell">{{ startYear + 7 }}</a>
+          <a class="cell">{{ startYear + yearOffset + 7 }}</a>
         </td>
       </tr>
       <tr>
         <td class="available" :class="getCellStyle(startYear + 8)">
-          <a class="cell">{{ startYear + 8 }}</a>
+          <a class="cell">{{ startYear + yearOffset + 8 }}</a>
         </td>
         <td class="available" :class="getCellStyle(startYear + 9)">
-          <a class="cell">{{ startYear + 9 }}</a>
+          <a class="cell">{{ startYear + yearOffset + 9 }}</a>
         </td>
         <td></td>
         <td></td>
@@ -72,11 +72,16 @@ export default defineComponent({
     date: {
       type: Object as PropType<Dayjs>,
     },
+    buddhistEra: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   emits: ['pick'],
 
   setup(props, ctx) {
+    const yearOffset = props.buddhistEra ? 543 : 0
     const startYear = computed(() => {
       return Math.floor(props.date.year() / 10) * 10
     })
@@ -100,13 +105,14 @@ export default defineComponent({
       if (target.tagName === 'A') {
         if (hasClass(target.parentNode, 'disabled')) return
         const year = target.textContent || target.innerText
-        ctx.emit('pick', Number(year))
+        ctx.emit('pick', Number(year - yearOffset))
       }
     }
     return {
       startYear,
       getCellStyle,
       handleYearTableClick,
+      yearOffset,
     }
   },
 })
