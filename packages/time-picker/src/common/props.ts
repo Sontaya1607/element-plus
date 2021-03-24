@@ -16,6 +16,10 @@ export const defaultProps = {
     type: String,
     default: '',
   },
+  buddhistEra: {
+    type: Boolean,
+    default: false,
+  },
   clearable: {
     type: Boolean,
     default: true,
