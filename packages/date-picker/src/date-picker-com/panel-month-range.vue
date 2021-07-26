@@ -104,6 +104,10 @@ export default defineComponent({
     parsedValue: {
       type: Array as PropType<Dayjs[]>,
     },
+    buddhistEra: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   emits: ['pick', 'set-picker-option'],
@@ -146,11 +150,13 @@ export default defineComponent({
       rightDate.value = rightDate.value.subtract(1, 'year')
     }
     const leftLabel = computed(() => {
-      return `${leftDate.value.year()} ${t('el.datepicker.year')}`
+      const yearOffset = props.buddhistEra ? 543 : 0
+      return `${leftDate.value.year() + yearOffset} ${t('el.datepicker.year')}`
     })
 
     const rightLabel = computed(() => {
-      return `${rightDate.value.year()} ${t('el.datepicker.year')}`
+      const yearOffset = props.buddhistEra ? 543 : 0
+      return `${rightDate.value.year() + yearOffset} ${t('el.datepicker.year')}`
     })
 
     const leftYear = computed(() => {

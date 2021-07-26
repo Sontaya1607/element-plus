@@ -237,6 +237,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    buddhistEra: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   emits: ['pick', 'set-picker-option'],
@@ -257,11 +261,13 @@ export default defineComponent({
     })
 
     const leftLabel = computed(() => {
-      return leftDate.value.year() + ' ' + t('el.datepicker.year') + ' ' + t(`el.datepicker.month${ leftDate.value.month() + 1 }`)
+      const yearOffset = props.buddhistEra ? 543 : 0
+      return leftDate.value.year() + yearOffset + ' ' + t('el.datepicker.year') + ' ' + t(`el.datepicker.month${ leftDate.value.month() + 1 }`)
     })
 
     const rightLabel = computed(() => {
-      return rightDate.value.year() + ' ' + t('el.datepicker.year') + ' ' + t(`el.datepicker.month${ rightDate.value.month() + 1 }`)
+      const yearOffset = props.buddhistEra ? 543 : 0
+      return rightDate.value.year() + yearOffset + ' ' + t('el.datepicker.year') + ' ' + t(`el.datepicker.month${ rightDate.value.month() + 1 }`)
     })
 
     const leftYear = computed(() => {
