@@ -465,6 +465,13 @@ export default defineComponent({
     }
 
     const parseUserInput = value => {
+      // for buddhistEra
+      if (props.buddhistEra) {
+        const dateFormat = props.format.replace('BBBB', 'YYYY')
+        const year = dayjs(value).year()
+        const dateValue = value.replace(year, year - 543)
+        return dayjs(dateValue, dateFormat)
+      }
       return dayjs(value, props.format)
     }
 

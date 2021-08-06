@@ -567,7 +567,28 @@ export default defineComponent({
     }
 
     const parseUserInput = value => {
-      return Array.isArray(value) ? value.map(_=> dayjs(_, format)) : dayjs(value, format)
+      if (Array.isArray(value)) {
+        // for buddhistEra
+        if (props.buddhistEra) {
+          const dateFormat = format.replace('BBBB', 'YYYY')
+          const dateValues = value.map(v => {
+            const year = dayjs(v).year()
+            const date = v.replace(year, year - 543)
+            return date
+          })
+          return dateValues.map(_=> dayjs(_, dateFormat))
+        }
+        return value.map(_=> dayjs(_, format))
+      } else {
+        // for buddhistEra
+        if (props.buddhistEra) {
+          const dateFormat = format.replace('BBBB', 'YYYY')
+          const year = dayjs(value).year()
+          const dateValue = value.replace(year, year - 543)
+          return dayjs(dateValue, dateFormat)
+        }
+        return dayjs(value, format)
+      }
     }
 
     const getDefaultValue = () => {
