@@ -468,8 +468,8 @@ export default defineComponent({
       // for buddhistEra
       if (props.buddhistEra) {
         const dateFormat = props.format.replace('BBBB', 'YYYY')
-        const year = dayjs(value).year()
-        const dateValue = value.replace(year, year - 543)
+        const year = dayjs(value, dateFormat).year()
+        const dateValue = value.replace(year, (year - 543))
         return dayjs(dateValue, dateFormat)
       }
       return dayjs(value, props.format)
