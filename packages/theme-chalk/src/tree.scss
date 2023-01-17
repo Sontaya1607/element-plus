@@ -1,13 +1,18 @@
-@import "mixins/mixins";
-@import "common/var";
-@import "common/transition";
-@import "checkbox";
+@use 'mixins/mixins' as *;
+@use 'mixins/var' as *;
+@use 'common/var' as *;
+@use 'common/transition';
+
+@include b(tree) {
+  @include set-component-css-var('tree', $tree);
+}
 
 @include b(tree) {
   position: relative;
   cursor: default;
-  background: $--color-white;
-  color: $--tree-font-color;
+  background: getCssVar('fill-color', 'blank');
+  color: getCssVar('tree-text-color');
+  font-size: getCssVar('font-size', 'base');
 
   @include e(empty-block) {
     position: relative;
@@ -22,8 +27,8 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    color: $--color-text-secondary;
-    font-size: $--font-size-base;
+    color: getCssVar('text-color', 'secondary');
+    font-size: getCssVar('font-size', 'base');
   }
 
   @include e(drop-indicator) {
@@ -31,22 +36,23 @@
     left: 0;
     right: 0;
     height: 1px;
-    background-color: $--color-primary;
+    background-color: getCssVar('color-primary');
   }
 }
 
 @include b(tree-node) {
   white-space: nowrap;
   outline: none;
-  &:focus { /* focus */
+  &:focus {
+    /* focus */
     > .#{$namespace}-tree-node__content {
-      background-color: $--tree-node-hover-background-color;
+      background-color: getCssVar('tree-node-hover-bg-color');
     }
   }
 
   @include when(drop-inner) {
     > .#{$namespace}-tree-node__content .#{$namespace}-tree-node__label {
-      background-color: $--color-primary;
+      background-color: getCssVar('color-primary');
       color: #fff;
     }
   }
@@ -59,12 +65,13 @@
 
     & > .#{$namespace}-tree-node__expand-icon {
       padding: 6px;
+      box-sizing: content-box;
     }
     & > label.#{$namespace}-checkbox {
       margin-right: 8px;
     }
     &:hover {
-      background-color: $--tree-node-hover-background-color;
+      background-color: getCssVar('tree-node-hover-bg-color');
     }
 
     .#{$namespace}-tree.is-dragging & {
@@ -82,11 +89,11 @@
 
   @include e(expand-icon) {
     cursor: pointer;
-    color: $--tree-expand-icon-color;
+    color: getCssVar('tree-expand-icon-color');
     font-size: 12px;
 
     transform: rotate(0deg);
-    transition: transform 0.3s ease-in-out;
+    transition: transform getCssVar('transition-duration') ease-in-out;
 
     &.expanded {
       transform: rotate(90deg);
@@ -96,16 +103,15 @@
       color: transparent;
       cursor: default;
     }
-  }
-
-  @include e(label) {
-    font-size: $--font-size-base;
+    &.is-hidden {
+      visibility: hidden;
+    }
   }
 
   @include e(loading-icon) {
     margin-right: 8px;
-    font-size: $--font-size-base;
-    color: $--tree-expand-icon-color;
+    font-size: getCssVar('font-size', 'base');
+    color: getCssVar('tree-expand-icon-color');
   }
 
   & > .#{$namespace}-tree-node__children {
@@ -118,6 +124,8 @@
   }
 }
 
-.#{$namespace}-tree--highlight-current .#{$namespace}-tree-node.is-current > .#{$namespace}-tree-node__content {
-  background-color: mix($--color-white, $--color-primary, 92%);
+.#{$namespace}-tree--highlight-current
+  .#{$namespace}-tree-node.is-current
+  > .#{$namespace}-tree-node__content {
+  background-color: getCssVar('color-primary-light-9');
 }

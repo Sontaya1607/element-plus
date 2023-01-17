@@ -1,12 +1,14 @@
-@import "mixins/mixins";
-@import "common/var";
+@use 'mixins/mixins' as *;
+@use 'mixins/var' as *;
+@use 'common/var' as *;
 
 @include b(main) {
-  // IE11 supports the <main> element partially https://caniuse.com/#search=main
+  @include set-component-css-var('main', $main);
+
   display: block;
   flex: 1;
   flex-basis: auto;
   overflow: auto;
   box-sizing: border-box;
-  padding: $--main-padding;
+  padding: getCssVar('main-padding');
 }

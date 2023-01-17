@@ -1,13 +1,23 @@
-#! /usr/bin/bash
+#!/bin/sh
 
-# Do not run this file without setting the environment variables, you will end up fatal error
-# If you wish to run this locally, please change the env variable before running this.
-# echo "//${REGISTRY}/:_authToken=${TOKEN}" > .npmrc
+set -e
 
-cat package.json \
-| grep -v '"private":' \
-| grep -v '"version":' \
-| sed "s/\(\"name\": \"element-plus\"\)/\1,\n  \"version\": \"${TAG_VERSION}\"/g" > package.json.bak
+pnpm i --frozen-lockfile
+pnpm update:version
 
-cat package.json.bak > package.json
-npm publish --registry ${REGISTRY}
+pnpm build
+
+cd dist/element-plus
+npm publish
+cd -
+
+cd internal/eslint-config
+npm publish
+cd -
+
+cd internal/metadata
+pnpm build
+npm publish
+cd -
+
+echo "✅ Publish completed"

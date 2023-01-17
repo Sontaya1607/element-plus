@@ -1,5 +1,6 @@
-@import "mixins/mixins";
-@import "common/var";
+@use 'sass:map';
+@use 'mixins/mixins' as *;
+@use 'common/var' as *;
 
 @include b(timeline-item) {
   position: relative;
@@ -15,47 +16,45 @@
     position: absolute;
     left: 4px;
     height: 100%;
-    border-left: 2px solid $--timeline-node-color;
+    border-left: 2px solid getCssVar('timeline-node-color');
   }
 
-  @include e(icon) {
-    color: $--color-white;
-    font-size: $--font-size-small;
+  & .#{$namespace}-timeline-item__icon {
+    color: getCssVar('color-white');
+    font-size: getCssVar('font-size-small');
   }
 
   @include e(node) {
     position: absolute;
-    background-color: $--timeline-node-color;
+    background-color: getCssVar('timeline-node-color');
+    border-color: getCssVar('timeline-node-color');
     border-radius: 50%;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
 
     @include m(normal) {
       left: -1px;
-      width: $--timeline-node-size-normal;
-      height: $--timeline-node-size-normal;
+      width: getCssVar('timeline-node-size-normal');
+      height: getCssVar('timeline-node-size-normal');
     }
     @include m(large) {
       left: -2px;
-      width: $--timeline-node-size-large;
-      height: $--timeline-node-size-large;
+      width: getCssVar('timeline-node-size-large');
+      height: getCssVar('timeline-node-size-large');
+    }
+    @include when(hollow) {
+      background: getCssVar('color-white');
+      border-style: solid;
+      border-width: 2px;
     }
 
-    @include m(primary) {
-      background-color: $--color-primary;
-    }
-    @include m(success) {
-      background-color: $--color-success;
-    }
-    @include m(warning) {
-      background-color: $--color-warning;
-    }
-    @include m(danger) {
-      background-color: $--color-danger;
-    }
-    @include m(info) {
-      background-color: $--color-info;
+    @each $type in (primary, success, warning, danger, info) {
+      @include m($type) {
+        background-color: getCssVar('color', $type);
+        border-color: getCssVar('color', $type);
+      }
     }
   }
 
@@ -67,13 +66,13 @@
   }
 
   @include e(content) {
-    color: $--color-text-primary;
+    color: getCssVar('text-color', 'primary');
   }
 
   @include e(timestamp) {
-    color: $--color-text-secondary;
+    color: getCssVar('text-color', 'secondary');
     line-height: 1;
-    font-size: $--font-size-small;
+    font-size: getCssVar('font-size-small');
 
     @include when(top) {
       margin-bottom: 8px;

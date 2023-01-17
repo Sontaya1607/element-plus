@@ -1,4 +1,5 @@
-@import "../common/var";
+@use '../mixins/mixins' as *;
+@use '../common/var' as *;
 
 @include b(year-table) {
   font-size: 12px;
@@ -6,7 +7,7 @@
   border-collapse: collapse;
 
   .#{$namespace}-icon {
-    color: $--datepicker-icon-color;
+    color: getCssVar('datepicker', 'icon-color');
   }
 
   td {
@@ -16,36 +17,44 @@
 
     &.today {
       .cell {
-        color: $--color-primary;
+        color: getCssVar('color', 'primary');
         font-weight: bold;
       }
     }
 
     &.disabled .cell {
-      background-color: $--background-color-base;
+      background-color: getCssVar('fill-color', 'light');
       cursor: not-allowed;
-      color: $--color-text-placeholder;
+      color: getCssVar('text-color', 'placeholder');
 
       &:hover {
-        color: $--color-text-placeholder;
+        color: getCssVar('text-color', 'placeholder');
       }
     }
 
     .cell {
       width: 48px;
-      height: 32px;
+      height: 36px;
       display: block;
-      line-height: 32px;
-      color: $--datepicker-font-color;
+      line-height: 36px;
+      color: getCssVar('datepicker-text-color');
+      border-radius: 18px;
       margin: 0 auto;
 
       &:hover {
-        color: $--datepicker-hover-font-color;
+        color: getCssVar('datepicker-hover-text-color');
       }
     }
 
     &.current:not(.disabled) .cell {
-      color: $--datepicker-active-color;
+      color: getCssVar('datepicker-active-color');
+    }
+
+    &:focus-visible {
+      outline: none;
+      .cell {
+        outline: 2px solid getCssVar('datepicker-active-color');
+      }
     }
   }
 }

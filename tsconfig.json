@@ -1,21 +1,10 @@
 {
- "compilerOptions": {
-   "module": "ESNext",
-   "declaration": true,
-   "noImplicitAny": false,
-   "removeComments": true,
-   "moduleResolution": "node",
-   "esModuleInterop": true,
-   "jsx": "preserve",
-   "noLib": false,
-   "target": "es6",
-   "sourceMap": true,
-   "lib": [
-     "ESNext", "DOM"
-   ],
-   "allowSyntheticDefaultImports": true
- },
- "exclude": [
-   "node_modules"
- ]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.web.json" },
+    { "path": "./tsconfig.play.json" },
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.vite-config.json" },
+    { "path": "./tsconfig.vitest.json" }
+  ]
 }

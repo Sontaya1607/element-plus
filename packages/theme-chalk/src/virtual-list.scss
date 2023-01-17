@@ -1,27 +1,40 @@
-@import "mixins/mixins";
-@import "common/var";
+@use 'mixins/mixins' as *;
+@use 'common/var' as *;
+
+@mixin showScrollbar {
+  @include b(virtual-scrollbar) {
+    opacity: 1;
+  }
+}
 
 @include b(vl) {
-  @include e(viewport) {
-    overflow: auto;
-  }
-
-  @include e(content) {
-    overflow: hidden;
-    will-change: transform;
+  @include e(wrapper) {
     position: relative;
+    &:hover {
+      @include showScrollbar();
+    }
+    &.always-on {
+      @include showScrollbar();
+    }
   }
+}
 
-  @include e(item-container) {
-    will-change: transform; 
-    display: flex;
+.#{$namespace}-vl__window {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+@include b(virtual-scrollbar) {
+  opacity: 0;
+  transition: opacity 340ms ease-out;
+  &.always-on {
+    opacity: 1;
+  }
+}
 
-    &[data-direction="v"] {
-      flex-direction: column;
-    }
-
-    &[data-direction="h"] {
-      flex-direction: row;
-    }
+@include b(vg) {
+  @include e(wrapper) {
+    position: relative;
   }
 }
