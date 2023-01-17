@@ -156,6 +156,7 @@
         :unlink-panels="unlinkPanels"
         :type="type"
         :default-value="defaultValue"
+        :buddhist-era="buddhistEra"
         @pick="onPick"
         @select-range="setSelectionRange"
         @set-picker-option="onSetPickerOption"
@@ -185,8 +186,8 @@ import { EVENT_CODE } from '@element-plus/constants'
 import { Calendar, Clock } from '@element-plus/icons-vue'
 import { formatter, parseDate, valueEquals } from '../utils'
 import { timePickerDefaultProps } from './props'
-
 import type { Dayjs } from 'dayjs'
+
 import type { ComponentPublicInstance } from 'vue'
 import type { Options } from '@popperjs/core'
 import type {

@@ -71,3 +71,10 @@ export type RangePickerSharedEmits = typeof rangePickerSharedEmits
 export type PanelRangeSharedProps = ExtractPropTypes<
   typeof panelRangeSharedProps
 >
+
+export const buddhistEraSharedProps = buildProps({
+  buddhistEra: {
+    type: Boolean,
+    default: false,
+  },
+} as const)

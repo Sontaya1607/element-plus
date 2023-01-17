@@ -8,6 +8,7 @@ import weekYear from 'dayjs/plugin/weekYear.js'
 import dayOfYear from 'dayjs/plugin/dayOfYear.js'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js'
+import buddhistEra from 'dayjs/plugin/buddhistEra'
 import { useNamespace } from '@element-plus/hooks'
 import { ROOT_PICKER_INJECTION_KEY } from '@element-plus/tokens'
 import {
@@ -28,6 +29,7 @@ dayjs.extend(weekYear)
 dayjs.extend(dayOfYear)
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
+dayjs.extend(buddhistEra)
 
 export default defineComponent({
   name: 'ElDatePicker',

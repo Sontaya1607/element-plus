@@ -1,6 +1,7 @@
 import { buildProps, definePropType } from '@element-plus/utils'
 import { useSizeProp } from '@element-plus/hooks'
 import { CircleClose } from '@element-plus/icons-vue'
+import { buddhistEraSharedProps } from '@element-plus/components/date-picker/src/props/shared'
 import { disabledTimeListsProps } from '../props/shared'
 
 import type { Component, ExtractPropTypes } from 'vue'
@@ -25,6 +26,8 @@ export type GetDisabledSeconds = (
   role: string,
   comparingDate?: Dayjs
 ) => number[]
+
+const { buddhistEra } = buddhistEraSharedProps
 
 export const timePickerDefaultProps = buildProps({
   id: {
@@ -125,6 +128,7 @@ export const timePickerDefaultProps = buildProps({
     default: true,
   },
   unlinkPanels: Boolean,
+  buddhistEra,
 } as const)
 
 export type TimePickerDefaultProps = ExtractPropTypes<

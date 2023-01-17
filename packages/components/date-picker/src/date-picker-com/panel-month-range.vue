@@ -163,6 +163,7 @@ const {
   unlinkPanels: toRef(props, 'unlinkPanels'),
   leftDate,
   rightDate,
+  buddhistEra: toRef(props, 'buddhistEra'),
 })
 
 const enableYearArrow = computed(() => {

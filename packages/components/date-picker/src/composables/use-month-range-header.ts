@@ -1,5 +1,6 @@
 import { computed } from 'vue'
 import { useLocale } from '@element-plus/hooks'
+import { getDayDiffValue } from '../utils'
 import type { Ref, ToRef } from 'vue'
 import type { Dayjs } from 'dayjs'
 
@@ -7,10 +8,12 @@ export const useMonthRangeHeader = ({
   unlinkPanels,
   leftDate,
   rightDate,
+  buddhistEra,
 }: {
   unlinkPanels: ToRef<boolean>
   leftDate: Ref<Dayjs>
   rightDate: Ref<Dayjs>
+  buddhistEra: ToRef<boolean>
 }) => {
   const { t } = useLocale()
   const leftPrevYear = () => {
@@ -35,11 +38,13 @@ export const useMonthRangeHeader = ({
     rightDate.value = rightDate.value.subtract(1, 'year')
   }
   const leftLabel = computed(() => {
-    return `${leftDate.value.year()} ${t('el.datepicker.year')}`
+    const yearOffset = getDayDiffValue(buddhistEra.value)
+    return `${leftDate.value.year() + yearOffset} ${t('el.datepicker.year')}`
   })
 
   const rightLabel = computed(() => {
-    return `${rightDate.value.year()} ${t('el.datepicker.year')}`
+    const yearOffset = getDayDiffValue(buddhistEra.value)
+    return `${rightDate.value.year() + yearOffset} ${t('el.datepicker.year')}`
   })
 
   const leftYear = computed(() => {

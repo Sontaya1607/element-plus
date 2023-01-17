@@ -265,7 +265,13 @@ import {
 } from '@element-plus/icons-vue'
 import { panelDateRangeProps } from '../props/panel-date-range'
 import { useRangePicker } from '../composables/use-range-picker'
-import { getDefaultValue, isValidRange } from '../utils'
+import {
+  getBuddhistEraFormat,
+  getBuddhistEraStringValue,
+  getDayDiffValue,
+  getDefaultValue,
+  isValidRange,
+} from '../utils'
 import DateTable from './basic-date-table.vue'
 
 import type { Dayjs } from 'dayjs'
@@ -332,13 +338,15 @@ const timeUserInput = ref<UserInput>({
 })
 
 const leftLabel = computed(() => {
-  return `${leftDate.value.year()} ${t('el.datepicker.year')} ${t(
+  const yearOffset = getDayDiffValue(props.buddhistEra)
+  return `${leftDate.value.year() + yearOffset} ${t('el.datepicker.year')} ${t(
     `el.datepicker.month${leftDate.value.month() + 1}`
   )}`
 })
 
 const rightLabel = computed(() => {
-  return `${rightDate.value.year()} ${t('el.datepicker.year')} ${t(
+  const yearOffset = getDayDiffValue(props.buddhistEra)
+  return `${rightDate.value.year() + yearOffset} ${t('el.datepicker.year')} ${t(
     `el.datepicker.month${rightDate.value.month() + 1}`
   )}`
 })
@@ -669,12 +677,23 @@ const handleClear = () => {
 }
 
 const formatToString = (value: Dayjs | Dayjs[]) => {
+  const template = props.buddhistEra ? getBuddhistEraFormat(format) : format
   return isArray(value)
-    ? value.map((_) => _.format(format))
-    : value.format(format)
+    ? value.map((_) => _.format(template))
+    : value.format(template)
 }
 
 const parseUserInput = (value: Dayjs | Dayjs[]) => {
+  if (props.buddhistEra) {
+    return isArray(value)
+      ? value.map((_) =>
+          dayjs(getBuddhistEraStringValue(_, format), format).locale(lang.value)
+        )
+      : dayjs(getBuddhistEraStringValue(value, format), format).locale(
+          lang.value
+        )
+  }
+
   return isArray(value)
     ? value.map((_) => dayjs(_, format).locale(lang.value))
     : dayjs(value, format).locale(lang.value)

@@ -132,3 +132,21 @@ export const buildPickerTable = (
     setRowMetadata?.(row)
   }
 }
+
+export const getDayDiffValue = (buddhistEra: boolean): number => {
+  return buddhistEra ? 543 : 0
+}
+
+export const getBuddhistEraFormat = (format: string): string => {
+  return format.replace('YYYY', 'BBBB')
+}
+
+export const getBuddhistEraStringValue = (
+  value: Dayjs,
+  format: string
+): string => {
+  const beYear = dayjs(value, format).year()
+  const ceYear = beYear - 543
+  const dateStr = value.toString()
+  return dateStr.replace(beYear.toString(), ceYear.toString())
+}

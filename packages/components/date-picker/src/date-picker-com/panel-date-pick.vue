@@ -146,6 +146,7 @@
             :date="innerDate"
             :disabled-date="disabledDate"
             :parsed-value="parsedValue"
+            :buddhist-era="buddhistEra"
             @pick="handleYearPick"
           />
           <month-table
@@ -216,6 +217,11 @@ import {
 } from '@element-plus/icons-vue'
 import { TOOLTIP_INJECTION_KEY } from '@element-plus/tokens'
 import { panelDatePickProps } from '../props/panel-date-pick'
+import {
+  getBuddhistEraFormat,
+  getBuddhistEraStringValue,
+  getDayDiffValue,
+} from '../utils'
 import DateTable from './basic-date-table.vue'
 import MonthTable from './basic-month-table.vue'
 import YearTable from './basic-year-table.vue'
@@ -343,9 +349,10 @@ const moveByYear = (forward: boolean) => {
 const currentView = ref('date')
 
 const yearLabel = computed(() => {
+  const yearOffset = getDayDiffValue(props.buddhistEra)
   const yearTranslation = t('el.datepicker.year')
   if (currentView.value === 'year') {
-    const startYear = Math.floor(year.value / 10) * 10
+    const startYear = Math.floor(year.value / 10) * 10 + yearOffset
     if (yearTranslation) {
       return `${startYear} ${yearTranslation} - ${
         startYear + 9
@@ -353,7 +360,7 @@ const yearLabel = computed(() => {
     }
     return `${startYear} - ${startYear + 9}`
   }
-  return `${year.value} ${yearTranslation}`
+  return `${year.value + yearOffset} ${yearTranslation}`
 })
 
 type Shortcut = {
@@ -559,14 +566,21 @@ const isValidValue = (date: unknown) => {
 }
 
 const formatToString = (value: Dayjs | Dayjs[]) => {
+  const template = props.buddhistEra
+    ? getBuddhistEraFormat(props.format)
+    : props.format
+
   if (selectionMode.value === 'dates') {
-    return (value as Dayjs[]).map((_) => _.format(props.format))
+    return (value as Dayjs[]).map((_) => _.format(template))
   }
-  return (value as Dayjs).format(props.format)
+  return (value as Dayjs).format(template)
 }
 
 const parseUserInput = (value: Dayjs) => {
-  return dayjs(value, props.format).locale(lang.value)
+  const dateStringValue = props.buddhistEra
+    ? getBuddhistEraStringValue(value, props.format)
+    : value
+  return dayjs(dateStringValue, props.format).locale(lang.value)
 }
 
 const getDefaultValue = () => {

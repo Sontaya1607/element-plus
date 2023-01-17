@@ -21,7 +21,7 @@
             @keydown.space.prevent.stop="handleYearTableClick"
             @keydown.enter.prevent.stop="handleYearTableClick"
           >
-            <span class="cell">{{ startYear + i * 4 + j }}</span>
+            <span class="cell">{{ startYear + i * 4 + j + yearOffset }}</span>
           </td>
           <td v-else />
         </template>
@@ -37,6 +37,7 @@ import { useLocale, useNamespace } from '@element-plus/hooks'
 import { rangeArr } from '@element-plus/components/time-picker'
 import { castArray, hasClass } from '@element-plus/utils'
 import { basicYearTableProps } from '../props/basic-year-table'
+import { getDayDiffValue } from '../utils'
 
 const datesInYear = (year: number, lang: string) => {
   const firstDay = dayjs(String(year)).locale(lang).startOf('year')
@@ -53,6 +54,8 @@ const ns = useNamespace('year-table')
 const { t, lang } = useLocale()
 const tbodyRef = ref<HTMLElement>()
 const currentCellRef = ref<HTMLElement>()
+const yearOffset = getDayDiffValue(props.buddhistEra)
+
 const startYear = computed(() => {
   return Math.floor(props.date.year() / 10) * 10
 })
@@ -92,7 +95,7 @@ const handleYearTableClick = (event: MouseEvent | KeyboardEvent) => {
   if (target && target.textContent) {
     if (hasClass(target, 'disabled')) return
     const year = target.textContent || target.innerText
-    emit('pick', Number(year))
+    emit('pick', Number(year) - yearOffset)
   }
 }
 
