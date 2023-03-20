@@ -219,8 +219,9 @@ import { TOOLTIP_INJECTION_KEY } from '@element-plus/tokens'
 import { panelDatePickProps } from '../props/panel-date-pick'
 import {
   getBuddhistEraFormat,
-  getBuddhistEraStringValue,
   getDayDiffValue,
+  parseBuddhistEraToChristEra,
+  parseBuddhistEraUserInputToDayjs,
 } from '../utils'
 import DateTable from './basic-date-table.vue'
 import MonthTable from './basic-month-table.vue'
@@ -577,10 +578,15 @@ const formatToString = (value: Dayjs | Dayjs[]) => {
 }
 
 const parseUserInput = (value: Dayjs) => {
-  const dateStringValue = props.buddhistEra
-    ? getBuddhistEraStringValue(value, props.format)
+  const dateStrVal = props.buddhistEra
+    ? parseBuddhistEraUserInputToDayjs(value, props.format)
     : value
-  return dayjs(dateStringValue, props.format).locale(lang.value)
+
+  const formatStr = props.buddhistEra
+    ? parseBuddhistEraToChristEra(props.format)
+    : props.format
+
+  return dayjs(dateStrVal, formatStr).locale(lang.value)
 }
 
 const getDefaultValue = () => {

@@ -267,10 +267,11 @@ import { panelDateRangeProps } from '../props/panel-date-range'
 import { useRangePicker } from '../composables/use-range-picker'
 import {
   getBuddhistEraFormat,
-  getBuddhistEraStringValue,
   getDayDiffValue,
   getDefaultValue,
   isValidRange,
+  parseBuddhistEraToChristEra,
+  parseBuddhistEraUserInputToDayjs,
 } from '../utils'
 import DateTable from './basic-date-table.vue'
 
@@ -685,13 +686,17 @@ const formatToString = (value: Dayjs | Dayjs[]) => {
 
 const parseUserInput = (value: Dayjs | Dayjs[]) => {
   if (props.buddhistEra) {
+    const formatStr = parseBuddhistEraToChristEra(format)
     return isArray(value)
       ? value.map((_) =>
-          dayjs(getBuddhistEraStringValue(_, format), format).locale(lang.value)
+          dayjs(parseBuddhistEraUserInputToDayjs(_, format), formatStr).locale(
+            lang.value
+          )
         )
-      : dayjs(getBuddhistEraStringValue(value, format), format).locale(
-          lang.value
-        )
+      : dayjs(
+          parseBuddhistEraUserInputToDayjs(value, format),
+          formatStr
+        ).locale(lang.value)
   }
 
   return isArray(value)

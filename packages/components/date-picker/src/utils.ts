@@ -141,12 +141,21 @@ export const getBuddhistEraFormat = (format: string): string => {
   return format.replace('YYYY', 'BBBB')
 }
 
-export const getBuddhistEraStringValue = (
+export const parseBuddhistEraToChristEra = (format: string): string => {
+  return format.replace('BBBB', 'YYYY')
+}
+
+export const parseBuddhistEraUserInputToDayjs = (
   value: Dayjs,
   format: string
 ): string => {
-  const beYear = dayjs(value, format).year()
-  const ceYear = beYear - 543
-  const dateStr = value.toString()
-  return dateStr.replace(beYear.toString(), ceYear.toString())
+  // Format should contain BBBB.
+
+  if (format.includes('BBBB')) {
+    const beYear = value.toString().slice(Math.max(0, 7))
+    const ceYear = (Number.parseInt(beYear) - 543).toString()
+
+    return value.toString().replace(beYear, ceYear)
+  }
+  return value.toString()
 }
